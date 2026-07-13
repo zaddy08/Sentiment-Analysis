@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cricket Player Sentiment Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <h1>Cricket Player Sentiment Dashboard</h1>
+      <p class="tagline">Public Sentiment Index (PSI) — time-decayed, cricket-aware.</p>
+    </div>
+    <div class="stats" id="overall-stats">
+      <div class="stat"><span class="stat-value" id="stat-mentions">–</span><span class="stat-label">Mentions</span></div>
+      <div class="stat"><span class="stat-value" id="stat-players">–</span><span class="stat-label">Players</span></div>
+      <div class="stat pos"><span class="stat-value" id="stat-pos">–</span><span class="stat-label">Positive</span></div>
+      <div class="stat neu"><span class="stat-value" id="stat-neu">–</span><span class="stat-label">Neutral</span></div>
+      <div class="stat neg"><span class="stat-value" id="stat-neg">–</span><span class="stat-label">Negative</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="overview" role="tab">Overview</button>
+    <button class="tab-btn" data-tab="chatbot" role="tab">Commentary Chatbot</button>
+  </nav>
+
+  <main>
+    <section class="tab-panel active" data-panel="overview">
+      <div class="filter-bar" data-scope="overview">
+        <span class="filter-label">Cross-filter:</span>
+        <button class="chip pos active" data-filter="positive">Positive</button>
+        <button class="chip neu active" data-filter="neutral">Neutral</button>
+        <button class="chip neg active" data-filter="negative">Negative</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Live Ranking</h2>
+          <button id="refresh-btn" class="ghost">Refresh</button>
+        </div>
+        <table id="ranking-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Player</th><th>Team</th><th>Role</th>
+              <th>PSI</th><th>Mentions</th><th>Distribution</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h2 id="detail-title">Player Detail</h2>
+          <div class="hint">Click a player row to see trends</div>
+        </div>
+        <div class="chart-grid">
+          <div class="chart-card wide">
+            <h3>Sentiment Trend</h3>
+            <canvas id="trend-chart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Sentiment Distribution</h3>
+            <canvas id="doughnut-chart"></canvas>
+          </div>
+        </div>
+        <div class="events">
+          <h3>Match Events</h3>
+          <ul id="event-list"><li class="empty">Select a player to see events.</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" data-panel="chatbot">
+      <div class="panel">
+        <div class="panel-header"><h2>Analyze Commentary</h2></div>
+        <div class="analyze-box">
+          <textarea id="analyze-text" placeholder="e.g. 'Kohli bowled Bumrah for a golden duck, sublime cover drive on the previous ball.'"></textarea>
+          <button id="analyze-btn">Score it</button>
+        </div>
+        <div id="analyze-result"><div class="hint">Score some commentary to populate the charts below.</div></div>
+      </div>
+
+      <div class="filter-bar" data-scope="chatbot">
+        <span class="filter-label">Cross-filter:</span>
+        <button class="chip pos active" data-filter="positive">Positive</button>
+        <button class="chip neu active" data-filter="neutral">Neutral</button>
+        <button class="chip neg active" data-filter="negative">Negative</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Chatbot Sentiment Charts</h2>
+          <div class="hint">Built from your analyzed sentences</div>
+        </div>
+        <div class="chart-grid">
+          <div class="chart-card wide">
+            <h3>Score per Sentence</h3>
+            <canvas id="chatbot-trend-chart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Sentiment Distribution</h3>
+            <canvas id="chatbot-doughnut-chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

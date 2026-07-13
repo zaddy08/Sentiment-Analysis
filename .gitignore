@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Database
+*.db
+
+# Local editor / tooling settings
+.claude/settings.local.json
+
+# OS
+.DS_Store
+Thumbs.db
