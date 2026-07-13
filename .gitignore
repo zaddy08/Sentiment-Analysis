@@ -8,9 +8,6 @@ venv/
 .venv/
 env/
 
-# Database
-*.db
-
 # Local editor / tooling settings
 .claude/settings.local.json
 
